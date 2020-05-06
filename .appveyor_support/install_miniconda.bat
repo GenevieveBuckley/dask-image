@@ -3,7 +3,7 @@
 
 :: Miniconda Config:
 set "MINICONDA_VERSION=4.8.2"
-set "MINICONDA_MD5=20D6BD9B3BD62F1FD874315B6B38C159"
+set "MINICONDA_MD5=20d6bd9b3bd62f1fd874315b6b38c159"
 set "MINICONDA_INSTALLER=%USERPROFILE%\miniconda.exe"
 set "MINICONDA_DIR=%USERPROFILE%\miniconda"
 set "MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-py37_%MINICONDA_VERSION%-Windows-x86_64.exe"
