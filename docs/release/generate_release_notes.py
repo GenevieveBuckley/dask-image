@@ -150,7 +150,7 @@ for pull in tqdm(
             pr_title_prefix = (key + ': ').lower()
             if summary.lower().startswith(pr_title_prefix):
                 key_dict[pull.number] = {
-                    'summary': summary[len(pr_title_prefix) :]
+                    'summary': summary[len(pr_title_prefix):]
                 }
                 break
         else:
