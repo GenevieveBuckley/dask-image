@@ -10,7 +10,7 @@ jobs:
   build:
     name: Create Release
     runs-on: ubuntu-latest
-    if: github.repository == 'dask/dask_image'
+    # if: github.repository == 'dask/dask_image'
     steps:
       - name: Checkout code
         uses: actions/checkout@master
