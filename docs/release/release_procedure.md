@@ -1,6 +1,7 @@
 # Release Guide
 
 This guide documents the `dask-image` release process.
+It is based on the release guide created for `napari` by Kira Evans.
 
 This guide is primarily intended for core developers of `dask-image`.
 They will need to have a [PyPI](https://pypi.org) account with upload permissions to the `dask-image` package.
