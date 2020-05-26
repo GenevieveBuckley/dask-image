@@ -162,7 +162,8 @@ highlights['Other Pull Requests'] = other_pull_requests
 
 
 # Now generate the release notes
-title = f'# dask-image {args.version}'
+title = (f'{args.version} ({datetime.today().strftime("%Y-%m-%d")})'
+         '\n------------------')
 print(title)
 
 print(
@@ -172,11 +173,11 @@ We're pleased to announce the release of dask-image {args.version}!
 )
 
 for section, pull_request_dicts in highlights.items():
-    print(f'## {section}\n')
+    print(f'{section}\n')
     if len(pull_request_dicts.items()) == 0:
         print()
     for number, pull_request_info in pull_request_dicts.items():
-        print(f'- {pull_request_info["summary"]} (#{number})')
+        print(f'* {pull_request_info["summary"]} (#{number})')
 
 
 contributors = OrderedDict()
@@ -191,7 +192,7 @@ for section_name, contributor_set in contributors.items():
     if None in contributor_set:
         contributor_set.remove(None)
     committer_str = (
-        f'## {len(contributor_set)} {section_name} added to this '
+        f'{len(contributor_set)} {section_name} added to this '
         'release (alphabetical)'
     )
     print(committer_str)
@@ -199,5 +200,5 @@ for section_name, contributor_set in contributors.items():
 
     for c in sorted(contributor_set, key=lambda x: users[x].lower()):
         commit_link = f"{GH}/{GH_USER}/{GH_REPO}/commits?author={c}"
-        print(f"- [{users[c]}]({commit_link}) - @{c}")
+        print(f"* `{users[c]} <{commit_link}>`_ - @{c}")
     print()
