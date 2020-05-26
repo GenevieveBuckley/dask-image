@@ -1,0 +1,63 @@
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+name: Create Release
+
+jobs:
+  build:
+    name: Create Release
+    runs-on: ubuntu-latest
+    # if: github.repository == 'dask/dask_image'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Install Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Install and Configure Miniconda
+        run: |
+          source .circleci/install_miniconda.sh
+          echo "MINICONDA_DIR=${MINICONDA_DIR}" >> "${BASH_ENV}"
+      - name: Create the build environment
+        run: |
+            export CONDA_ENV_TYPE="tst_py3.7"
+            source .circleci/create_env.sh
+            echo "CONDA_ENV_PATH=${CONDA_ENV_PATH}" >> "${BASH_ENV}"
+      - name: Install the package and dependencies
+        run: |
+            source "${MINICONDA_DIR}/etc/profile.d/conda.sh"
+            conda activate "${CONDA_ENV_PATH}"
+            pip install -e .
+            pip install PyGithub>=1.44.1 twine>=3.1.1 tqdm
+      - name: Build Distribution
+        run: |
+          python setup.py sdist
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ env.tag }}
+          body: ${{ steps.release_notes.outputs.contents }}
+          draft: false
+          prerelease: ${{ contains(github.ref, 'rc') }}
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/dask-image-${{ env.tag }}.tar.gz
+          asset_name: dask-image-${{ env.tag }}.tar.gz
+          asset_content_type: application/gzip
+      - name: Publish PyPI Package
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.pypi_password }}
