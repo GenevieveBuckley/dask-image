@@ -1,4 +1,0 @@
-black==19.10b0
--r default.txt
--r test.txt
--r release.txt

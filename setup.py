@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import sys
 
 import setuptools
@@ -29,16 +28,19 @@ with open("README.rst") as readme_file:
 with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
-base_directory = os.path.dirname(os.path.realpath(__file__))
-filename = os.path.join(base_directory, 'requirements', 'default.txt')
-with open(filename) as f:
-    contents = f.read()
-requirements = contents.split('\n')
+requirements = [
+    "dask[array] >=0.16.1",
+    "numpy >=1.11.3",
+    "scipy >=0.19.1",
+    "pims >=0.4.1",
+]
 
-filename = os.path.join(base_directory, 'requirements', 'test.txt')
-with open(filename) as f:
-    contents = f.read()
-test_requirements = contents.split('\n')
+test_requirements = [
+    "flake8 >=3.4.1",
+    "pytest >=3.0.5",
+    "pytest-flake8 >=0.8.1",
+    "scikit-image >=0.12.3",
+]
 
 cmdclasses = {
     "test": PyTest,
