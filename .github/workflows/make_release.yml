@@ -18,19 +18,9 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: 3.7
-      - name: Install and Configure Miniconda
-        run: |
-          source .circleci/install_miniconda.sh
-          echo "MINICONDA_DIR=${MINICONDA_DIR}" >> "${BASH_ENV}"
-      - name: Create the build environment
-        run: |
-            export CONDA_ENV_TYPE="tst_py3.7"
-            source .circleci/create_env.sh
-            echo "CONDA_ENV_PATH=${CONDA_ENV_PATH}" >> "${BASH_ENV}"
       - name: Install the package and dependencies
         run: |
-            source "${MINICONDA_DIR}/etc/profile.d/conda.sh"
-            conda activate "${CONDA_ENV_PATH}"
+            python -m pip install --upgrade pip
             pip install -e .
             pip install PyGithub>=1.44.1 twine>=3.1.1 tqdm
       - name: Build Distribution

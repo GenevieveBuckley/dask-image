@@ -9,8 +9,13 @@ This guide is primarily intended for core developers of `dask-image`.
 They will need to have a [PyPI](https://pypi.org) account
 with upload permissions to the `dask-image` package.
 
-You will also need the additional `release` dependencies in
-`requirements/release.txt` to complete the release process.
+You will also need these additional release dependencies
+to complete the release process:
+
+..code-block:: bash
+
+   pip install PyGithub>=1.44.1 twine>=3.1.1 tqdm
+
 
 
 Set PyPI password as GitHub secret
