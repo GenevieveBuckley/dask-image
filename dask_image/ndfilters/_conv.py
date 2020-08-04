@@ -9,7 +9,7 @@ from ..utils._dispatcher import Dispatcher
 dispatch_convolve = Dispatcher(name="dispatch_convolve")
 
 @dispatch_convolve.register(np.ndarray)
-def numpy_convolve():
+def numpy_convolve(*args, **kwargs):
     return scipy.ndimage.filters.convolve
 
 
@@ -18,7 +18,7 @@ def register_cupy():
     import cupyx.scipy.ndimage
 
     @dispatch_convolve.register(cupy.ndarray)
-    def cupy_convolve():
+    def cupy_convolve(*args, **kwargs):
         return cupyx.scipy.ndimage.filters.convolve
 
 
