@@ -15,6 +15,7 @@ def numpy_convolve(*args, **kwargs):
 
 @dispatch_convolve.register_lazy("cupy")
 def register_cupy():
+    import cupy
     import cupyx.scipy.ndimage
 
     @dispatch_convolve.register(cupy.ndarray)
