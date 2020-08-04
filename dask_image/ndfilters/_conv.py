@@ -4,23 +4,7 @@ import numpy as np
 import scipy.ndimage.filters
 
 from . import _utils
-from ..utils._dispatcher import Dispatcher
-
-dispatch_convolve = Dispatcher(name="dispatch_convolve")
-
-@dispatch_convolve.register(np.ndarray)
-def numpy_convolve(*args, **kwargs):
-    return scipy.ndimage.filters.convolve
-
-
-@dispatch_convolve.register_lazy("cupy")
-def register_cupy():
-    import cupy
-    import cupyx.scipy.ndimage
-
-    @dispatch_convolve.register(cupy.ndarray)
-    def cupy_convolve(*args, **kwargs):
-        return cupyx.scipy.ndimage.filters.convolve
+from ..utils._dispatcher import convolve_dispatch
 
 
 @_utils._update_wrapper(scipy.ndimage.filters.convolve)
@@ -34,7 +18,7 @@ def convolve(image,
     depth, boundary = _utils._get_depth_boundary(image.ndim, depth, "none")
 
     result = image.map_overlap(
-        dispatch_convolve(image),
+        convolve_dispatch(image),
         depth=depth,
         boundary=boundary,
         dtype=image.dtype,
