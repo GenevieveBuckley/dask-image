@@ -1,3 +1,5 @@
+import numpy as np
+import scipy.ndimage.filters
 from dask.utils import Dispatch
 
 
