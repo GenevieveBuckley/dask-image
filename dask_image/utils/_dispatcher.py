@@ -1,6 +1,9 @@
 import numpy as np
 import scipy.ndimage.filters
 from dask.utils import Dispatch
+import cupy
+import cupy.core.core
+import cupyx.scipy.ndimage
 
 
 def check_arraytypes_compatible(*args):
@@ -50,12 +53,6 @@ def numpy_convolve(*args, **kwargs):
     return scipy.ndimage.filters.convolve(*args, **kwargs)
 
 
-@dispatch_convolve.register_lazy("cupy")
-def register_cupy():
-    import cupy
-    import cupy.core.core
-    import cupyx.scipy.ndimage
-
-    @dispatch_convolve.register(cupy.core.core.ndarray)
-    def cupy_convolve(*args, **kwargs):
-        return cupyx.scipy.ndimage.filters.convolve(*args, **kwargs)
+@dispatch_convolve.register(cupy.core.core.ndarray)
+def cupy_convolve(*args, **kwargs):
+    return cupyx.scipy.ndimage.filters.convolve(*args, **kwargs)
